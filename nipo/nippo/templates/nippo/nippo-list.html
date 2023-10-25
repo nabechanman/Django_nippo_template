@@ -1,3 +1,103 @@
-<h1>ブランチ上で変更されたのかな</h1>
-<h1>嗚呼嗚呼</h1>
-<h2>っっっっz</h2>
+<html lang="en">
+<head>
+    <style>
+        .line {
+            display: block;
+        }
+
+        .waku {
+            padding: 10px; margin-bottom: 10px; border: 5px double #333333;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="waku">
+        <p>{{text}}</p>
+        <p>{{nn}}</p>
+
+        <p>平素よりお世話になっております。</p>
+        <p>〇〇株式会社の渡邉です。</p>
+        <p>「」につきまして、お打ち合わせの時間を頂戴したくご連絡いたしました。</p>
+
+        <p>つきましては、下記日程よりご都合のよろしい日時はございますか。</p>
+
+        <p>{{input1_date}}  {{input1_time1}} ~ {{input1_time2}}</p>
+
+        <p>上記日程でご都合が悪い場合には、再度別の日程で調整いたしますので、お気軽にお申し付けください。</p>
+
+        <p>お忙しいところ恐縮ですが、◇月◇日（◇）までにご返答いただけますと幸いです。</p>
+            
+        <p>ご検討の程よろしくお願いいたします。</p>
+
+        <p>渡邉涼太</p>
+
+
+
+
+
+        
+    </div>
+
+
+    <form method="POST">
+        {% csrf_token %}
+        <label class="line">
+            <input type="text" name="text">
+        </label>
+        <label class="line">
+            <input type="text" name="name">
+        </label>
+       
+
+        <div id="input-container">
+            <label class="line">
+                <input type="date" name="input1_date">
+                <input type="time" name="input1_time1">
+                <input type="time" name="input1_time2">
+                <button type="button" class="delete-button">削除</button>
+            </label>
+        </div>
+        <button type="button" id="duplicate-button">複製</button>
+
+        <button type="submit">送信</button>
+    </form>
+
+    <script>
+        document.getElementById('duplicate-button').addEventListener('click', function () {
+            // 複製対象の元の<label>要素内の<input>要素を取得
+            const originalInput = document.querySelector('#input-container label:last-child');
+
+            // 複製を作成
+            const clonedInput = originalInput.cloneNode(true);
+
+            // 新しいidを設定
+            const inputCount = document.querySelectorAll('#input-container label').length + 1;
+            clonedInput.querySelector('input[type="date"]').name = `input${inputCount}_date`;
+            clonedInput.querySelector('input[type="time"]').name = `input${inputCount}_time1`;
+            clonedInput.querySelectorAll('input[type="time"]')[1].name = `input${inputCount}_time2`;
+
+            // 削除ボタンを追加する前に、以前の削除ボタンを削除
+            const existingDeleteButton = clonedInput.querySelector('.delete-button');
+            if (existingDeleteButton) {
+                existingDeleteButton.remove();
+            }
+
+            // クローンをコンテナに追加
+            document.querySelector('#input-container').appendChild(clonedInput);
+
+            // 削除ボタンに削除イベントを追加
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "delete-button";
+            deleteButton.textContent = "削除";
+            clonedInput.appendChild(deleteButton);
+
+            deleteButton.addEventListener('click', function () {
+                this.parentNode.remove();
+            });
+        });
+    </script>
+</body>
+</html>
