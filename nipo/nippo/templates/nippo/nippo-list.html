@@ -16,10 +16,13 @@
 </head>
 
 <body>
-    <div class="waku">
-        <textarea name="" id="" cols="100" rows="30">
 
-        
+    
+    <div class="waku">
+        <div class="input-container">
+            <textarea name="" id="copyText" cols="100" rows="30">
+
+
        {{text}}
        {{nn}}
 
@@ -43,12 +46,10 @@
         渡邉涼太
 
       </textarea>
-
-
-
-
-
-
+            <button onclick="copyToClipboard(this)">
+                Copy Text
+            </button>
+        </div>
     </div>
 
 
@@ -114,6 +115,27 @@
                 this.parentNode.remove();
             });
         });
+
+
+        async function copyToClipboard(obj) {
+            const element = obj.previousElementSibling;
+            // クリップボードAPIが使え、且つ、値が空でない時
+            if (navigator.clipboard && !element.value == false) {
+                await navigator.clipboard.writeText(element.value);
+                alert("コピーされました！");
+            } else {
+                alert("コピーされませんでした！");
+            }
+        }
+
+
+
+
+
+
+
+
+
     </script>
 </body>
 
