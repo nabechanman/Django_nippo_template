@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
 
 
 def nippoListView(request):
@@ -57,4 +58,23 @@ def nippoListView(request):
         ctx["input3_time1"] = input3_time1
         ctx["input3_time2"] = input3_time2
 
+
+
+        if 'send_email' in request.POST:  
+
+            subject = "題名"
+            message = request.POST.get("textarea", "")
+            from_email = "nabeon0627@gmail.com"
+            recipient_list = ["nabeon0627@gmail.com"]
+
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+            return redirect('success_page')  
+
+
     return render(request, template_name, ctx)
+
+
+
+def success_page(request):
+    return render(request, "nippo/success.html")

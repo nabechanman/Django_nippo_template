@@ -52,7 +52,7 @@
     <div class="centering_parent">
         <div class="waku">
             <div class="input-container">
-                <!-- <form method="POST">{% csrf_token %} -->
+                <form method="POST">{% csrf_token %}
                 <textarea name="textarea" id="copyText" cols="100" rows="23">
 
                     {{text}}
@@ -76,10 +76,8 @@
 
                     渡邉涼太
                 </textarea>
-                <!-- <button type="submit">Gmailで送信</button> -->
+                <button type="submit" name="send_email">Gmailで送信</button>
                 </form>
-
-                <button onclick="copyToClipboard(this)">Copy Text</button>
             </div>
         </div>
     </div>
@@ -153,17 +151,6 @@
             });
         });
 
-
-        async function copyToClipboard(obj) {
-            const element = obj.previousElementSibling;
-            // クリップボードAPIが使え、且つ、値が空でない時
-            if (navigator.clipboard && !element.value == false) {
-                await navigator.clipboard.writeText(element.value);
-                alert("コピーされました！");
-            } else {
-                alert("コピーされませんでした！");
-            }
-        }
 
 
 
