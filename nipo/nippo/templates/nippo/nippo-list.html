@@ -52,7 +52,8 @@
     <div class="centering_parent">
         <div class="waku">
             <div class="input-container">
-                <textarea name="" id="copyText" cols="100" rows="23">
+                <!-- <form method="POST">{% csrf_token %} -->
+                <textarea name="textarea" id="copyText" cols="100" rows="23">
 
                     {{text}}
                     {{nn}}
@@ -75,6 +76,9 @@
 
                     渡邉涼太
                 </textarea>
+                <!-- <button type="submit">Gmailで送信</button> -->
+                </form>
+
                 <button onclick="copyToClipboard(this)">Copy Text</button>
             </div>
         </div>
