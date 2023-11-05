@@ -1,3 +1,4 @@
+
 <html lang="en">
 
 <head>
@@ -52,8 +53,7 @@
     <div class="centering_parent">
         <div class="waku">
             <div class="input-container">
-                <form method="POST">{% csrf_token %}
-                <textarea name="textarea" id="copyText" cols="100" rows="23">
+                <textarea name="" id="copyText" cols="100" rows="23">
 
 {{text}}
 {{nn}}
@@ -71,11 +71,9 @@
 上記日程でご都合が悪い場合には、再度別の日程で調整いたしますので、お気軽にお申し付けください。
 ご検討の程よろしくお願いいたします。
 
-                    
 渡邉涼太
                 </textarea>
-                <button type="submit" name="send_email">Gmailで送信</button>
-                </form>
+                <button onclick="copyToClipboard(this)">Copy Text</button>
             </div>
         </div>
     </div>
@@ -149,6 +147,17 @@
             });
         });
 
+
+        async function copyToClipboard(obj) {
+            const element = obj.previousElementSibling;
+            // クリップボードAPIが使え、且つ、値が空でない時
+            if (navigator.clipboard && !element.value == false) {
+                await navigator.clipboard.writeText(element.value);
+                alert("コピーされました！");
+            } else {
+                alert("コピーされませんでした！");
+            }
+        }
 
 
 
