@@ -1,0 +1,173 @@
+
+<html lang="en">
+
+<head>
+    <style>
+        .line {
+            display: block;
+        }
+
+        .waku {
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 5px double #333333;
+            text-align: center;
+            /* テキストを中央揃え */
+        }
+
+        .centering_parent {
+            display: flex;
+            /* コンテンツを水平方向に中央に配置 */
+            justify-content: center;
+            /* 横方向の中央揃え */
+            padding: 20px;
+            /* 余白指定 */
+            /* 背景色指定 */
+            height: 500px;
+            /* 高さ指定 */
+        }
+
+        .input-container textarea {
+            margin: 0 auto;
+            /* テキストエリアを水平方向に中央に配置 */
+        }
+
+        form {
+            text-align: center; /* フォーム内のテキストを中央揃え */
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 垂直方向に中央揃え */
+        }
+
+        form label {
+            margin: 10px 0; /* ラベル間の垂直マージンを追加 */
+        }
+
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="centering_parent">
+        <div class="waku">
+            <div class="input-container">
+                <textarea name="" id="copyText" cols="100" rows="23">
+
+{{text}}
+{{nn}}
+
+平素よりお世話になっております。
+渡邉です。
+
+{{content}}につきまして、お打ち合わせの時間を頂戴したくご連絡いたしました。
+つきましては、下記日程よりご都合のよろしい日時はございますか。
+
+{{input1_date}}  {{input1_time1}} ~ {{input1_time2}}
+{{input2_date}}  {{input2_time1}} ~ {{input2_time2}}
+{{input3_date}}  {{input3_time1}} ~ {{input3_time2}}
+
+上記日程でご都合が悪い場合には、再度別の日程で調整いたしますので、お気軽にお申し付けください。
+ご検討の程よろしくお願いいたします。
+
+渡邉涼太
+                </textarea>
+                <button onclick="copyToClipboard(this)">Copy Text</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="centering_parent">
+        <div>
+            <div class="input-container">
+                <form method="POST">
+                    {% csrf_token %}
+                    <label class="line">
+                        <input type="text" name="text" placeholder="企業名">
+                    </label>
+                    <label class="line">
+                        <input type="text" name="name" placeholder="先方の名前">
+                    </label>
+                    <label class="line">
+                        <input type="text" name="content" placeholder="内容">
+                    </label>
+
+                    <div id="input-container">
+                        <label class="line">
+                            <input type="date" name="input1_date">
+                            <input type="time" name="input1_time1">
+                            <input type="time" name="input1_time2">
+                            <button type="button" class="delete-button">削除</button>
+                        </label>
+                    </div>
+                    <button type="button" id="duplicate-button">複製</button>
+                    <button type="submit">送信</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    
+    <script>
+        document.getElementById('duplicate-button').addEventListener('click', function () {
+            // 複製対象の元の<label>要素内の<input>要素を取得
+            const originalInput = document.querySelector('#input-container label:last-child');
+
+            // 複製を作成
+            const clonedInput = originalInput.cloneNode(true);
+
+            // 新しいidを設定
+            const inputCount = document.querySelectorAll('#input-container label').length + 1;
+            clonedInput.querySelector('input[type="date"]').name = `input${inputCount}_date`;
+            clonedInput.querySelector('input[type="time"]').name = `input${inputCount}_time1`;
+            clonedInput.querySelectorAll('input[type="time"]')[1].name = `input${inputCount}_time2`;
+
+            // 削除ボタンを追加する前に、以前の削除ボタンを削除
+            const existingDeleteButton = clonedInput.querySelector('.delete-button');
+            if (existingDeleteButton) {
+                existingDeleteButton.remove();
+            }
+
+            // クローンをコンテナに追加
+            document.querySelector('#input-container').appendChild(clonedInput);
+
+            // 削除ボタンに削除イベントを追加
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "delete-button";
+            deleteButton.textContent = "削除";
+            clonedInput.appendChild(deleteButton);
+
+            deleteButton.addEventListener('click', function () {
+                this.parentNode.remove();
+            });
+        });
+
+
+        async function copyToClipboard(obj) {
+            const element = obj.previousElementSibling;
+            // クリップボードAPIが使え、且つ、値が空でない時
+            if (navigator.clipboard && !element.value == false) {
+                await navigator.clipboard.writeText(element.value);
+                alert("コピーされました！");
+            } else {
+                alert("コピーされませんでした！");
+            }
+        }
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+
+</html>
